@@ -1056,30 +1056,7 @@
 
   let  calendarColors = {};
 
-
 function loadCalendarConfig() {
-
-  /*
-   * Start the events request immediately.
-   * It can run at the same time as calendarList.
-   */
-
-  const year =
-    currentDate.getFullYear();
-
-  const month =
-    currentDate.getMonth() + 1;
-
-  prefetchedCalendarEvents =
-    apiGet("events", {
-      year: year,
-      month: month
-    });
-
-
-  /*
-   * Get calendar configuration.
-   */
 
   apiGet("calendarList")
     .then(function(config) {
@@ -1106,41 +1083,17 @@ function loadCalendarConfig() {
       });
 
       restoreCalendarFilters();
-
-      /*
-       * Wait for the events request that was already started.
-       */
-
-      prefetchedCalendarEvents
-        .then(function(events) {
-
-          const cacheKey =
-            year + "_" + month;
-
-          browserCalendarCache[cacheKey] =
-            events;
-
-          loadCalendar();
-
-        })
-        .catch(function(error) {
-          console.error(error);
-
-          document.getElementById("calendarGrid").innerHTML =
-            '<div style="padding:30px;text-align:center;color:#777;">Unable to load calendar events.</div>';
-        });
+      loadCalendar();
 
     })
     .catch(function(error) {
-
       console.error(error);
-
       document.getElementById("calendarGrid").innerHTML =
         '<div style="padding:30px;text-align:center;color:#777;">Unable to load calendar data.</div>';
-
     });
 
 }
+
 
   /* ==========================================
      CURRENT MONTH
