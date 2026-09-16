@@ -123,29 +123,35 @@
 
     function loadCalendarConfig() {
 
-      google.script.run
-        .withSuccessHandler(function(config) {
-
+      apiGet("calendarList")
+        .then(function(config) {
+      
           config.forEach(function(calendar) {
-
+      
             calendarColors[calendar.name] =
               calendar.color;
-
+      
             selectedCalendars[calendar.name] =
               true;
-
+      
           });
-
+      
           // If the events have already loaded,
           // render them now.
           if (window.upcomingEventsData) {
+      
             processUpcomingEvents(
               window.upcomingEventsData
             );
+      
           }
-
+      
         })
-        .getCalendarList();
+        .catch(function(error) {
+      
+          console.error(error);
+      
+        });
 
       // Start loading events immediately.
       // This no longer waits for getCalendarList().
