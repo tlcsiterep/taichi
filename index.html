@@ -1141,54 +1141,6 @@ function loadCalendarConfig() {
     });
 
 }
-```
-
-### What changed
-
-Before:
-
-```text
-calendarList
-     ↓
-wait ~6 seconds
-     ↓
-events
-     ↓
-wait ~6 seconds
-     ↓
-calendar appears
-```
-
-Now:
-
-```text
-calendarList ──────────────┐
-                            ├── calendar appears
-events ────────────────────┘
-```
-
-Both requests start immediately.
-
-**Your 60-second GAS event cache is untouched**, so we haven't sacrificed event freshness.
-
-### Test
-
-Save the GitHub version and reload the calendar in Google Sites.
-
-Then look at the browser Network timing again.
-
-I'm particularly interested in whether you now see:
-
-```text
-api=calendarlist
-api=events&year=2026&month=...
-```
-
-starting at roughly the **same time**.
-
-Tell me the two times you get.
-
-
 
   /* ==========================================
      CURRENT MONTH
