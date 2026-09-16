@@ -110,6 +110,25 @@
 
   <script>
 
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdpfd2ehI9jKzw4TDpIdPoX-DzYF6ZrVXAFV1RXQhgDCJS7oU3BL1dnXL8hb_Y4Ngj/exec";
+
+    function apiGet(action, params = {}) {
+      const url = new URL(APPS_SCRIPT_URL);
+      url.searchParams.set("api", action);
+  
+      Object.keys(params).forEach(function(key) {
+        url.searchParams.set(key, params[key]);
+      });
+  
+      return fetch(url.toString())
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error("Apps Script request failed: " + response.status);
+          }
+          return response.json();
+        });
+    }
+
     let calendarColors = {};
 
     let selectedCalendars = {};
