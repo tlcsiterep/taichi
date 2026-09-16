@@ -1065,7 +1065,9 @@
 
         config.forEach(function(calendar) {
           calendarColors[calendar.name] = calendar.color;
-          selectedCalendars[calendar.name] = true;
+          if (!(calendar.name in selectedCalendars)) {
+            selectedCalendars[calendar.name] = true;
+}
         });
 
         restoreCalendarFilters();
