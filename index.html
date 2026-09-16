@@ -1,0 +1,3620 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      /*background: #b7d7f0;*/
+      color: #333;
+    }
+
+    .calendar-container {
+      width: 100%;
+      max-width: none;
+      margin: auto;
+      border: 12px solid #E8F2FA;
+      border-radius: 0px;
+      padding: 10px;
+      overflow: hidden;
+      background: #E8F2FA;
+    }
+
+    .month-grid,
+    .week-grid,
+    .schedule-view {
+      border-radius: 0px 0px 12px 12px;
+      overflow: hidden;
+      background: white;
+    }
+
+    /* =========================
+       HEADER
+       ========================= */
+
+   .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px 8px;
+      border-bottom: 1px solid #ddd;
+      border-radius: 12px 12px 0 0;
+      background: #E8F2FA;
+    }
+
+    /* =========================
+   CALENDAR TOOLBAR
+   ========================= */
+
+    .calendar-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 8px;
+      position: relative;
+      background: #E8F2FA;
+    }
+
+    .calendar-filter-panel {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      z-index: 20;
+      width: 220px;
+      padding: 12px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .calendar-filter-panel.show {
+      display: block;
+    }
+
+    .filter-panel-title {
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .calendar-filter-panel label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 2px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .filter-all {
+      font-weight: 600;
+    }
+
+    .filter-divider {
+      height: 2px;
+      margin: 5px 0;
+      background: #eee;
+    }
+
+    .calendar-filter-button {
+      min-width: 115px;
+      padding: 7px 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      background: white;
+      color: #333;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .calendar-filter-button:hover {
+      background: #f5f5f5;
+    }
+
+   .navigation {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+   .navigation-left {
+      order: 1;
+      margin-right: 0;
+    }
+
+    .navigation-right {
+      order: 4;
+      margin-left: 0;
+    }
+
+    .calendar-toolbar {
+      order: 2;
+    }
+
+    .month-title {
+      order: 3;
+    }
+
+    .navigation-left button,
+    .navigation-right button {
+      min-width: 42px;
+      height: 42px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    #todayButton {
+      min-width: 42px;
+      height: 42px;
+      padding: 7px 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      background: #BAD4FF;
+      color: #333;
+    }
+
+    #todayButton:hover {
+      background: #A4BADE;
+      color: white;
+    }
+
+    #viewSelect:hover {
+      background: #A4BADE;
+    }
+
+    #viewSelect,
+    .calendar-filter-button {
+      height: 38px;
+      padding: 0 16px;
+      background: #BAD4FF;
+      color: #333;
+      border: 1px solid #aaa;
+      border-radius: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    #viewSelect:hover,
+    .calendar-filter-button:hover {
+      background: #A4BADE;/* #A4BADE*/
+      color: white;
+    }
+
+    .navigation-left button svg,
+    .navigation-right button svg {
+      width: 28px;
+      height: 28px;
+      stroke-width: 3;
+    }
+
+    .view-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    #monthWeekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }  
+
+    .view-buttons button.active {
+      background-color: #BAD4FF;
+      color: white;
+      font-weight: 600;
+    }
+
+  .select-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .view-selector select {
+      min-width: 125px;
+      height: 38px;
+      padding: 0 34px 0 16px;
+      border: 1px solid #aaa;
+      border-radius: 20px;
+      background: #BAD4FF;
+      color: #333;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .select-arrow {
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #555;
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    button {
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 5px;
+      padding: 7px 12px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #A4BADE;
+    }
+
+    .month-title {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    /* =========================
+       WEEKDAYS
+       ========================= */
+
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-left: 1px solid #ddd;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      background: white;
+    }
+
+    .weekday {
+      padding: 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 13px;
+      border-right: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* =========================
+       MONTH GRID
+       ========================= */
+
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-auto-rows: 190px;
+      border-left: 1px solid #ddd;
+      border-top: 1px solid #ddd;
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: 55px repeat(7, 1fr);
+      border-left: 1px solid #ddd;
+      border-top: 1px solid #ddd;
+      height: 720px;
+      overflow-y: auto;
+      scroll-padding-top: 360px;
+      position: relative;
+    }
+
+    .week-time-column {
+      border-right: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    .week-time-slot {
+      height: 60px;
+      padding: 4px 6px;
+      text-align: right;
+      font-size: 11px;
+      color: #777;
+      border-bottom: 1px solid #eee;
+    }
+
+    .week-day {
+      position: relative;
+      border-right: 1px solid #ddd;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    .week-day-header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      height: 45px;
+      padding: 7px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid #ddd;
+      background: #fafafa;
+      box-sizing: border-box;
+    }
+
+    .week-day.today .week-day-header {
+      background: #4285f4;
+      color: white;
+    }
+
+    .week-day.today {
+      background: #dfecf2;
+    }
+
+    .week-day-body {
+      position: relative;
+      height: 720px;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 59px,
+          #eee 60px
+        );
+    }
+
+    
+
+   /* .week-day-header {
+      height: 45px;
+      padding: 7px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    .week-day.today .week-day-header {
+      background: #4285f4;
+      color: white;
+    }*/
+
+    .week-event {
+      margin-bottom: 0;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+   .day {
+        min-height: 130px;
+        padding: 6px;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow: visible;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 25px;
+      margin-bottom: 5px;
+      flex-shrink: 0;
+    }
+
+    .day-events {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .more-events {
+      font-size: 12px;
+      line-height: 14px;
+      font-weight: 600;
+      color: #555;
+      padding: 2px 4px;
+      cursor: pointer;
+      background: white;
+      flex-shrink: 0;
+    }
+
+    .day-number {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      padding-left: 2px;
+    }
+
+    .other-month {
+      background: #fafafa;
+      color: #aaa;
+    }
+
+    /* =========================
+       TODAY
+       ========================= */
+
+/*
+    .today .day-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #4285f4;
+      color: white;
+    }*/
+
+    .day.today {
+      background: #dfecf2;
+    }
+
+    /* =========================
+       EVENT CARDS
+       ========================= */
+
+    .event-card {
+      border: 1px solid;
+      border-radius: 5px;
+      padding: 4px 8px;
+      margin-bottom: 3px;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 500;
+      transition: transform 0.1s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+
+    .event-card.past-event {
+      opacity: 0.45;
+    }
+
+    .event-title {
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+
+      .event-title {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        overflow-wrap: anywhere;
+      }
+
+    }
+
+    .event-time {
+      margin-top: 3px;
+      opacity: 0.9;
+    }
+
+    .event-detail-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .event-detail-popup {
+      width: min(420px, 90vw);
+      font-family: Calibri, sans-serif;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-detail-popup h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .event-detail-calendar {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .event-detail-time {
+      margin-bottom: 12px;
+    }
+
+    .event-detail-location {
+      margin-bottom: 18px;
+    }
+
+    .event-detail-close {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .event-detail-map {
+      display: block;
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #4285F4;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .event-detail-map:hover {
+      opacity: 1;
+      visibility: visible;
+      background: #42f4c5;
+      color: white;
+    }
+
+    .more-popup {
+      position: absolute;
+      z-index: 100;
+      top: 28px;
+      left: 5px;
+      right: 5px;
+      max-height: 260px;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 7px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .more-popup .event-card {
+      margin-bottom: 5px;
+    }
+
+    .more-popup .event-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .more-events:hover {
+    text-decoration: underline;
+    } 
+    
+    /* =========================
+      SCHEDULE VIEW
+      ========================= */
+
+    .schedule-view {
+      width: 100%;
+      max-height: 720px;
+      overflow-y: auto;
+      border-left: 1px solid #ddd;
+      border-top: 1px solid #ddd;
+      background: white;
+    }
+
+    .schedule-day-header {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      padding: 12px 14px;
+      background: #f1f5f8;
+      border-bottom: 2px solid #d5dde3;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .schedule-day-header.today {
+      background: #4285f4;
+      color: white;
+      font-weight: 700;
+    }
+
+    .schedule-event-row {
+      display: grid;
+      grid-template-columns: 85px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 7px 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .schedule-event-time {
+      padding: 7px 5px;
+      text-align: right;
+      font-size: 12px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .schedule-event {
+      margin-bottom: 0;
+      min-height: 48px;
+      line-height: 1.25;
+    }
+
+    .schedule-location {
+      margin-top: 4px;
+      font-size: 11px;
+      opacity: 0.9;
+    }
+
+    .schedule-empty {
+      padding: 40px;
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+    }
+
+    
+    /* =========================
+   MOBILE
+   ========================= */
+
+    @media (max-width: 900px) {
+
+      .calendar-toolbar {
+        flex-wrap: wrap;
+      }
+
+    }
+
+  @media (max-width: 600px) {
+
+    /* =========================
+      Calendar header
+      ========================= */
+
+    .calendar-header {
+      padding: 8px 4px;
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 4px;
+    }
+
+
+    /* =========================
+      Calendar toolbar - top row
+      ========================= */
+
+    .calendar-toolbar {
+      grid-column: 1 / -1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .view-selector {
+      width: 150px;
+      align-self: center;
+    }
+
+    .select-wrapper {
+      width: 150px;
+    }
+
+    .select-wrapper select {
+      width: 150px;
+    }
+
+    /* =========================
+       Full-width mobile layout
+       ========================= */
+
+    .calendar-container {
+      width: 100%;
+      margin: 0;
+      border-width: 4px;
+      padding: 6px;
+      overflow: visible;
+    }
+
+    .schedule-container {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 8px;
+    }
+
+    .calendar-filter-button {
+      width: 150px;
+      text-align: center;
+      min-width: 150px;
+      align-self: center;
+    }
+
+
+    /* =========================
+      Navigation row
+      ========================= */
+
+    .navigation-left {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .month-title {
+      grid-column: 2;
+      grid-row: 2;
+      min-width: 0;
+      font-size: 18px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .navigation-right {
+      grid-column: 3;
+      grid-row: 2;
+      gap: 2px;
+    }
+
+
+    /* Navigation buttons */
+
+    .navigation-left button,
+    .navigation-right button {
+      min-width: 34px;
+      width: 34px;
+      height: 34px;
+    }
+
+    #todayButton {
+      min-width: 42px;
+      width: auto;
+      height: 34px;
+      padding: 5px 10px;
+    }
+
+
+    /* =========================
+      Month view
+      ========================= */
+
+    .month-grid {
+      grid-auto-rows: 140px;
+    }
+
+
+    /* =========================
+      Week view
+      ========================= */
+
+    .week-grid {
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+
+    .week-day {
+      min-width: 120px;
+    }
+
+
+    /* =========================
+      Schedule view
+      ========================= */
+
+    .schedule-event-row {
+      grid-template-columns: 65px 1fr;
+      gap: 8px;
+      padding: 6px 7px;
+    }
+
+    .schedule-event-time {
+      padding: 7px 3px;
+      font-size: 11px;
+    }
+
+
+    /* =========================
+      Event popup
+      ========================= */
+
+    .event-detail-popup {
+      width: 92vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 16px;
+      border-radius: 10px;
+    }
+
+    .event-title {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      overflow-wrap: anywhere;
+    }
+
+  }/*end 600px */
+
+  /* to control month dropdown color*/
+  #viewSelect option {
+    background: white;
+    color: #333;
+  }
+
+   #viewSelect option:hover {
+    background: white;
+    color: #333;
+  }
+
+  </style>
+</head>
+
+
+<body>
+
+<div class="calendar-container">
+
+  <!-- HEADER -->
+
+  <div class="calendar-header">
+
+    <div class="calendar-toolbar">
+
+      <div class="view-selector">
+        <div class="select-wrapper">
+          <select id="viewSelect" onchange="changeCalendarView(this.value)">
+            <option value="month">Month</option>
+            <option value="week">Week</option>
+            <option value="schedule">Schedule</option>
+          </select>
+          <span class="select-arrow">▾</span>
+        </div>
+      </div>
+
+      <button
+        id="calendarFilterButton"
+        class="calendar-filter-button"
+        onclick="toggleCalendarFilters()">
+        Calendars ▾
+      </button>
+
+      <div
+        id="calendarFilterPanel"
+        class="calendar-filter-panel">
+
+        <div class="filter-panel-title">
+          Calendars
+        </div>
+
+        <label class="filter-all">
+          <input
+            type="checkbox"
+            id="allCalendarsCheckbox"
+            checked
+            onchange="toggleAllCalendars(this)">
+          All calendars
+        </label>
+
+        <div class="filter-divider"></div>
+
+        <div id="calendarFilterList"></div>
+
+        <!--<label>
+          <input type="checkbox" 
+           /*checked */
+          data-calendar="Beginner Tai Chi"
+          onchange="updateCalendarFilter(this)">
+          Beginner Tai Chi
+        </label>
+
+        <label>
+          <input type="checkbox" 
+          /*checked */
+          data-calendar="Advanced Tai Chi"
+          onchange="updateCalendarFilter(this)">
+          Advanced Tai Chi
+        </label>
+
+        <label>
+          <input type="checkbox" 
+          /*checked */
+          data-calendar="Qigong"
+          onchange="updateCalendarFilter(this)">
+          Qigong
+        </label>
+
+        <label>
+          <input type="checkbox" 
+          /*checked */
+          data-calendar="Intermediate Tai Chi"
+          onchange="updateCalendarFilter(this)">
+          Intermediate Tai Chi
+        </label>
+
+        <label>
+          <input type="checkbox" 
+          /*checked */
+          data-calendar="Holidays in United States"
+          onchange="updateCalendarFilter(this)">
+          Holidays
+        </label>-->
+
+      </div>
+    </div>
+
+
+    <div class="navigation navigation-left">
+      <button onclick="previousPeriod()" aria-label="Previous period">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="month-title" id="monthTitle"></div>
+
+    <div class="navigation navigation-right">
+      <button id="todayButton" onclick="goToday()">Today</button>
+     <button onclick="nextPeriod()" aria-label="Next period">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- WEEKDAY HEADINGS -->
+
+  <div class="weekdays" id="monthWeekdays">
+
+    <div class="weekday">Sun</div>
+    <div class="weekday">Mon</div>
+    <div class="weekday">Tue</div>
+    <div class="weekday">Wed</div>
+    <div class="weekday">Thu</div>
+    <div class="weekday">Fri</div>
+    <div class="weekday">Sat</div>
+
+  </div>
+
+
+  <!-- CALENDAR -->
+
+  <div class="month-grid" id="calendarGrid"></div>
+
+</div>
+
+
+<script>
+  /*
+   * GITHUB PAGES TEST VERSION
+   *
+   * Put your Apps Script Web App URL here.
+   * Example:
+   * const APPS_SCRIPT_URL = "https://script.google.com/macros/s/DEPLOYMENT_ID/exec";
+   */
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdpfd2ehI9jKzw4TDpIdPoX-DzYF6ZrVXAFV1RXQhgDCJS7oU3BL1dnXL8hb_Y4Ngj/exec";
+
+  function apiGet(action, params = {}) {
+    const url = new URL(APPS_SCRIPT_URL);
+    url.searchParams.set("api", action);
+
+    Object.keys(params).forEach(function(key) {
+      url.searchParams.set(key, params[key]);
+    });
+
+    return fetch(url.toString())
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error("Apps Script request failed: " + response.status);
+        }
+        return response.json();
+      });
+  }
+
+
+  /* ==========================================
+     CALENDAR COLORS
+     ========================================== */
+
+  let  calendarColors = {};
+
+  function loadCalendarConfig() {
+
+    apiGet("calendarList")
+      .then(function(config) {
+
+        calendarColors = {};
+
+        config.forEach(function(calendar) {
+          calendarColors[calendar.name] = calendar.color;
+          selectedCalendars[calendar.name] = true;
+        });
+
+        restoreCalendarFilters();
+        loadCalendar();
+
+      })
+      .catch(function(error) {
+        console.error(error);
+        document.getElementById("calendarGrid").innerHTML =
+          '<div style="padding:30px;text-align:center;color:#777;">Unable to load calendar data.</div>';
+      });
+
+  } 
+
+
+  /* ==========================================
+     CURRENT MONTH
+     ========================================== */
+
+  let currentDate = new Date();
+
+  let currentView = "month";
+
+  const browserCalendarCache = {};
+
+  let selectedCalendars = {};
+
+ /*   "Beginner Tai Chi": true,
+
+    "Advanced Tai Chi": true,
+
+    "Qigong": true,
+
+    "Intermediate Tai Chi": true,
+
+    "Holidays in United States": true
+
+  };*/
+
+  function restoreCalendarFilters() {
+
+    const filterList =
+      document.getElementById("calendarFilterList");
+
+    filterList.innerHTML = "";
+
+    Object.keys(calendarColors).forEach(function(calendarName) {
+
+      const label = document.createElement("label");
+
+      const checkbox = document.createElement("input");
+
+      checkbox.type = "checkbox";
+      checkbox.dataset.calendar = calendarName;
+      checkbox.onchange = function() {
+        updateCalendarFilter(this);
+      };
+
+      label.appendChild(checkbox);
+      label.appendChild(
+        document.createTextNode(" " + calendarName)
+      );
+
+      filterList.appendChild(label);
+
+    });
+
+    const checkboxes =
+      document.querySelectorAll(
+        '#calendarFilterPanel input[data-calendar]'
+      );
+
+    checkboxes.forEach(function(checkbox) {
+
+      const calendarName =
+        checkbox.dataset.calendar;
+
+      checkbox.checked =
+        selectedCalendars[calendarName] === true;
+
+    });
+
+    updateAllCalendarsCheckbox();
+
+  }
+
+  function updateAllCalendarsCheckbox() {
+
+    const checkboxes =
+      document.querySelectorAll(
+        '#calendarFilterPanel input[data-calendar]'
+      );
+
+    const checkedCount =
+      Array.from(checkboxes).filter(
+        function(checkbox) {
+          return checkbox.checked;
+        }
+      ).length;
+
+    const allCheckbox =
+      document.getElementById(
+        "allCalendarsCheckbox"
+      );
+
+    allCheckbox.checked =
+      checkedCount === checkboxes.length;
+
+    allCheckbox.indeterminate =
+      checkedCount > 0 &&
+      checkedCount < checkboxes.length;
+
+  }
+
+ const savedCalendarFilters =
+    localStorage.getItem("calendarFilters");
+
+if (savedCalendarFilters) {
+  try {
+    const saved =
+      JSON.parse(savedCalendarFilters);
+
+    Object.keys(saved).forEach(function(calendarName) {
+      selectedCalendars[calendarName] = saved[calendarName];
+    });
+
+  } catch (error) {
+    console.log("Could not load saved calendar filters.");
+  }
+}
+
+
+  /* ==========================================
+     LOAD CALENDAR
+     ========================================== */
+
+function loadCalendar() {
+
+    if (currentView === "schedule") {
+        loadScheduleView();
+        return;
+      }
+      
+    /*if (currentView === "month") {
+      document
+        .getElementById("monthViewButton")
+        .classList.add("active");
+
+      document
+        .getElementById("weekViewButton")
+        .classList.remove("active");
+    }*/
+
+    if (currentView === "week") {
+    loadWeekView();
+    return;
+  }
+
+  const year =
+    currentDate.getFullYear();
+
+  const month =
+    currentDate.getMonth() + 1;
+
+  const cacheKey =
+    year + "_" + month;
+
+  const monthName =
+    currentDate.toLocaleString(
+      "default",
+      { month: "long" }
+    );
+
+  document.getElementById("monthTitle").textContent =
+    monthName + " " + year;
+
+
+  /* Use browser cache immediately */
+
+  if (browserCalendarCache[cacheKey]) {
+
+    drawCalendar(
+      year,
+      month,
+      browserCalendarCache[cacheKey]
+    );
+
+    setTimeout(preloadAdjacentMonths, 100);
+
+    return;
+
+  }
+
+
+  /* Otherwise get events from server */
+
+  apiGet("events", {
+    year: year,
+    month: month
+  })
+    .then(function(events) {
+
+      browserCalendarCache[cacheKey] =
+        events;
+
+      drawCalendar(
+        year,
+        month,
+        events
+      );
+
+      setTimeout(preloadAdjacentMonths, 100);
+
+    })
+    .catch(function(error) {
+      console.error(error);
+      document.getElementById("calendarGrid").innerHTML =
+        '<div style="padding:30px;text-align:center;color:#777;">Unable to load calendar events.</div>';
+    });
+
+}
+
+function eventsOverlap(eventA, eventB) {
+
+  const startA =
+    new Date(eventA.start).getTime();
+
+  const endA =
+    new Date(eventA.end).getTime();
+
+  const startB =
+    new Date(eventB.start).getTime();
+
+  const endB =
+    new Date(eventB.end).getTime();
+
+  return (
+    startA < endB &&
+    endA > startB
+  );
+}
+
+function loadScheduleView() {
+
+  const grid =
+    document.getElementById("calendarGrid");
+
+  grid.innerHTML = "";
+  grid.className = "schedule-view";
+
+
+  /* ======================================
+     DATE RANGE
+     ====================================== */
+
+  const startDate =
+    new Date(currentDate);
+
+  startDate.setHours(0, 0, 0, 0);
+
+
+  /* Move back to Sunday */
+/*
+  startDate.setDate(
+    startDate.getDate() -
+    startDate.getDay()
+  );*/
+
+
+  const endDate =
+    new Date(startDate);
+
+  endDate.setDate(
+    endDate.getDate() + 30
+  );
+
+
+  /* ======================================
+     TITLE
+     ====================================== */
+
+  const startText =
+    startDate.toLocaleDateString(
+      undefined,
+      {
+        month: "short",
+        day: "numeric"
+      }
+    );
+
+  const endText =
+    new Date(
+      endDate.getTime() - 1
+    ).toLocaleDateString(
+      undefined,
+      {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      }
+    );
+
+  document.getElementById("monthTitle").textContent =
+    "Schedule • " +
+    startText + " – " + endText;
+
+
+  /* ======================================
+     DETERMINE REQUIRED MONTHS
+     ====================================== */
+
+  const requiredMonths = [];
+
+  let scanDate =
+    new Date(startDate);
+
+  while (scanDate < endDate) {
+
+    const year =
+      scanDate.getFullYear();
+
+    const month =
+      scanDate.getMonth() + 1;
+
+    const cacheKey =
+      year + "_" + month;
+
+    if (
+      !requiredMonths.some(
+        function(item) {
+          return item.cacheKey === cacheKey;
+        }
+      )
+    ) {
+
+      requiredMonths.push({
+        year: year,
+        month: month,
+        cacheKey: cacheKey
+      });
+
+    }
+
+    scanDate.setMonth(
+      scanDate.getMonth() + 1
+    );
+
+  }
+
+
+  /* ======================================
+     FIND MISSING MONTHS
+     ====================================== */
+
+  const missingMonths =
+    requiredMonths.filter(
+      function(item) {
+
+        return !browserCalendarCache[
+          item.cacheKey
+        ];
+
+      }
+    );
+
+
+  /* ======================================
+     LOAD MISSING MONTHS
+     ====================================== */
+
+  if (missingMonths.length > 0) {
+
+    let completed = 0;
+
+    missingMonths.forEach(function(item) {
+
+      apiGet("events", {
+        year: item.year,
+        month: item.month
+      })
+        .then(function(events) {
+
+          browserCalendarCache[
+            item.cacheKey
+          ] = events;
+
+          completed++;
+
+          if (
+            completed ===
+            missingMonths.length
+          ) {
+
+            renderScheduleEvents(
+              startDate,
+              endDate
+            );
+
+          }
+
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+
+    });
+
+    return;
+
+  }
+
+
+  /* ======================================
+     EVERYTHING IS ALREADY CACHED
+     ====================================== */
+
+  renderScheduleEvents(
+    startDate,
+    endDate
+  );
+
+  
+}
+
+function renderScheduleEvents(startDate, endDate) {
+
+  const grid =
+    document.getElementById("calendarGrid");
+
+  grid.innerHTML = "";
+
+
+  /* ======================================
+     GET EVENTS FROM CACHED MONTHS
+     ====================================== */
+
+  const scheduleEvents = [];
+
+
+  let scanDate =
+    new Date(startDate);
+
+
+  while (scanDate < endDate) {
+
+    const cacheKey =
+      scanDate.getFullYear() +
+      "_" +
+      (scanDate.getMonth() + 1);
+
+
+    const monthEvents =
+      browserCalendarCache[
+        cacheKey
+      ] || [];
+
+
+    monthEvents.forEach(function(event) {
+
+      const eventStart =
+        new Date(event.start);
+
+
+      if (
+        eventStart >= startDate &&
+        eventStart < endDate &&
+        selectedCalendars[event.calendar]
+      ) {
+
+        if (
+          !scheduleEvents.some(
+            function(existing) {
+
+              return existing.id === event.id;
+
+            }
+          )
+        ) {
+
+          scheduleEvents.push(event);
+
+        }
+
+      }
+
+    });
+
+
+    scanDate.setMonth(
+      scanDate.getMonth() + 1
+    );
+
+  }
+
+
+  /* ======================================
+     SORT EVENTS
+     ====================================== */
+
+  scheduleEvents.sort(function(a, b) {
+
+    return (
+      new Date(a.start) -
+      new Date(b.start)
+    );
+
+  });
+
+
+  /* ======================================
+     NO EVENTS
+     ====================================== */
+
+  if (scheduleEvents.length === 0) {
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "schedule-empty";
+
+    empty.textContent =
+      "No events scheduled.";
+
+    grid.appendChild(empty);
+
+    return;
+
+  }
+
+
+  /* ======================================
+     GROUP EVENTS BY DATE
+     ====================================== */
+
+  let currentDayKey = "";
+
+
+  scheduleEvents.forEach(function(event) {
+
+    const eventStart =
+      new Date(event.start);
+
+
+    const dayKey =
+      eventStart.getFullYear() +
+      "-" +
+      (eventStart.getMonth() + 1) +
+      "-" +
+      eventStart.getDate();
+
+
+    /* ==================================
+       DAY HEADER
+       ================================== */
+
+    if (dayKey !== currentDayKey) {
+
+      currentDayKey = dayKey;
+
+
+      const dayHeader =
+        document.createElement("div");
+
+      dayHeader.className =
+        "schedule-day-header";
+
+
+      dayHeader.textContent =
+        eventStart.toLocaleDateString(
+          undefined,
+          {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+          }
+        );
+
+
+      /* Highlight today */
+
+      const today =
+        new Date();
+
+
+      if (
+        eventStart.getFullYear() ===
+          today.getFullYear() &&
+        eventStart.getMonth() ===
+          today.getMonth() &&
+        eventStart.getDate() ===
+          today.getDate()
+      ) {
+
+        dayHeader.classList.add(
+          "today"
+        );
+
+      }
+
+
+      grid.appendChild(dayHeader);
+
+    }
+
+
+    /* ==================================
+       EVENT ROW
+       ================================== */
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "schedule-event-row";
+
+
+    /* ==================================
+       TIME
+       ================================== */
+
+    const time =
+      document.createElement("div");
+
+    time.className =
+      "schedule-event-time";
+
+
+    if (event.allDay) {
+
+      time.textContent =
+        "All day";
+
+    } else {
+
+      time.textContent =
+        formatTime(eventStart);
+
+    }
+
+
+    /* ==================================
+       EVENT CARD
+       ================================== */
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "event-card schedule-event";
+
+
+    const color =
+      event.color
+      || calendarColors[event.calendar]
+      || "#777777";
+
+
+    card.style.backgroundColor =
+      color;
+
+    card.style.borderColor =
+      color;
+
+    card.style.color =
+      getReadableTextColor(color);
+
+
+    /* Past event */
+
+    const eventEnd =
+      new Date(event.end);
+
+
+    if (
+      eventEnd < new Date()
+    ) {
+
+      card.classList.add(
+        "past-event"
+      );
+
+    }
+
+
+    /* ==================================
+       TITLE
+       ================================== */
+
+    const title =
+      document.createElement("div");
+
+    title.className =
+      "event-title";
+
+
+    if (
+      event.calendar ===
+      "Holidays in United States"
+    ) {
+
+      title.textContent =
+        event.title;
+
+    } else {
+
+      title.textContent =
+        event.calendar;
+
+    }
+
+
+    /* ==================================
+       TIME INSIDE CARD
+       ================================== */
+
+    const eventTime =
+      document.createElement("div");
+
+    eventTime.className =
+      "event-time";
+
+
+    if (event.allDay) {
+
+      eventTime.textContent =
+        "All day";
+
+    } else {
+
+      eventTime.textContent =
+        formatTime(eventStart) +
+        " – " +
+        formatTime(eventEnd);
+
+    }
+
+
+    card.appendChild(title);
+    card.appendChild(eventTime);
+
+
+    /* ==================================
+       LOCATION
+       ================================== */
+
+    if (event.location) {
+
+      const location =
+        document.createElement("div");
+
+      location.className =
+        "schedule-location";
+
+      location.textContent =
+        "📍 " +
+        event.location;
+
+      card.appendChild(location);
+
+    }
+
+
+    /* ==================================
+       POPUP
+       ================================== */
+
+    card.onclick =
+      function(e) {
+
+        e.stopPropagation();
+
+        showEventPopup(event);
+
+      };
+
+
+    row.appendChild(time);
+    row.appendChild(card);
+
+    grid.appendChild(row);
+
+  });
+
+}
+
+function loadWeekView() {
+
+  const grid =
+    document.getElementById("calendarGrid");
+
+  grid.innerHTML = "";
+  grid.className = "week-grid";
+
+
+  /* ======================================
+     FIND WEEK
+     ====================================== */
+
+  const weekStart =
+    new Date(currentDate);
+
+  weekStart.setHours(0, 0, 0, 0);
+
+  weekStart.setDate(
+    weekStart.getDate() -
+    weekStart.getDay()
+  );
+
+
+  const weekEnd =
+    new Date(weekStart);
+
+  weekEnd.setDate(
+    weekEnd.getDate() + 6
+  );
+
+
+  /* ======================================
+     TITLE
+     ====================================== */
+
+  const startText =
+    weekStart.toLocaleDateString(
+      undefined,
+      {
+        month: "short",
+        day: "numeric"
+      }
+    );
+
+  const endText =
+    weekEnd.toLocaleDateString(
+      undefined,
+      {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      }
+    );
+
+  document.getElementById("monthTitle").textContent =
+    startText + " – " + endText;
+
+
+  /* ======================================
+     GET EVENTS FROM CACHED MONTHS
+     ====================================== */
+
+  const weekEvents = [];
+
+  for (let i = 0; i < 7; i++) {
+
+    const day =
+      new Date(weekStart);
+
+    day.setDate(
+      weekStart.getDate() + i
+    );
+
+    const cacheKey =
+      day.getFullYear() +
+      "_" +
+      (day.getMonth() + 1);
+
+    const monthEvents =
+      browserCalendarCache[cacheKey] || [];
+
+    monthEvents.forEach(function(event) {
+
+      const eventStart =
+        new Date(event.start);
+
+      if (
+        eventStart >= weekStart &&
+        eventStart < new Date(
+          weekEnd.getFullYear(),
+          weekEnd.getMonth(),
+          weekEnd.getDate() + 1
+        )
+      ) {
+
+        if (
+          !weekEvents.some(function(existing) {
+            return existing.id === event.id;
+          })
+        ) {
+
+          weekEvents.push(event);
+
+        }
+
+      }
+
+    });
+
+  }
+
+
+  /* ======================================
+     TIME COLUMN
+     ====================================== */
+
+  const timeColumn =
+    document.createElement("div");
+
+  timeColumn.className =
+    "week-time-column";
+
+
+  const timeHeader =
+    document.createElement("div");
+
+  timeHeader.style.height =
+    "45px";
+
+  timeColumn.appendChild(
+    timeHeader
+  );
+
+
+  for (let hour = 0; hour < 24; hour++) {
+
+    const slot =
+      document.createElement("div");
+
+    slot.className =
+      "week-time-slot";
+
+    const date =
+      new Date();
+
+    date.setHours(hour, 0, 0, 0);
+
+    slot.textContent =
+      date.toLocaleTimeString(
+        undefined,
+        {
+          hour: "numeric"
+        }
+      );
+
+    timeColumn.appendChild(slot);
+
+  }
+
+  grid.appendChild(timeColumn);
+
+
+  /* ======================================
+     CREATE SEVEN DAYS
+     ====================================== */
+
+  for (let i = 0; i < 7; i++) {
+
+    const day =
+      new Date(weekStart);
+
+    day.setDate(
+      weekStart.getDate() + i
+    );
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      "week-day";
+
+
+    /* Today */
+
+    const today =
+      new Date();
+
+    if (
+      day.getFullYear() ===
+        today.getFullYear() &&
+      day.getMonth() ===
+        today.getMonth() &&
+      day.getDate() ===
+        today.getDate()
+    ) {
+
+      cell.classList.add("today");
+
+    }
+
+
+    /* Header */
+
+    const header =
+      document.createElement("div");
+
+    header.className =
+      "week-day-header";
+
+    header.textContent =
+      day.toLocaleDateString(
+        undefined,
+        {
+          weekday: "short",
+          month: "numeric",
+          day: "numeric"
+        }
+      );
+
+    cell.appendChild(header);
+
+
+    /* Body */
+
+    const body =
+      document.createElement("div");
+
+    body.className =
+      "week-day-body";
+
+    cell.appendChild(body);
+
+
+    /* ==================================
+       EVENTS FOR THIS DAY
+       ================================== */
+
+    const dayEvents =
+      weekEvents
+        .filter(function(event) {
+
+          if (!selectedCalendars[event.calendar]) {
+                return false;
+          }
+
+          const eventStart =
+            new Date(event.start);
+
+          return (
+            eventStart.getFullYear() ===
+              day.getFullYear() &&
+            eventStart.getMonth() ===
+              day.getMonth() &&
+            eventStart.getDate() ===
+              day.getDate()
+          );
+
+        })
+        .sort(function(a, b) {
+
+          return (
+            new Date(a.start) -
+            new Date(b.start)
+          );
+
+        });
+
+
+    /* ==================================
+       CALCULATE OVERLAP COLUMNS
+       ================================== */
+
+    const columns = [];
+
+    dayEvents.forEach(function(event) {
+
+      let column = 0;
+
+      while (true) {
+
+        if (!columns[column]) {
+          columns[column] = [];
+        }
+
+        const hasOverlap =
+          columns[column].some(
+            function(existingEvent) {
+              return eventsOverlap(
+                event,
+                existingEvent
+              );
+            }
+          );
+
+        if (!hasOverlap) {
+
+          columns[column].push(event);
+
+          event._weekColumn =
+            column;
+
+          break;
+
+        }
+
+        column++;
+
+      }
+
+    });
+
+
+     /* ==================================
+       DETERMINE OVERLAPPING GROUPS
+       ================================== */
+
+    dayEvents.forEach(function(event) {
+
+      const group = [];
+
+      function addToGroup(testEvent) {
+
+        if (group.indexOf(testEvent) !== -1) {
+          return;
+        }
+
+        group.push(testEvent);
+
+        dayEvents.forEach(function(otherEvent) {
+
+          if (
+            group.indexOf(otherEvent) === -1 &&
+            eventsOverlap(
+              testEvent,
+              otherEvent
+            )
+          ) {
+
+            addToGroup(otherEvent);
+
+          }
+
+        });
+
+      }
+
+      addToGroup(event);
+
+      event._weekColumnCount =
+        Math.max(
+          group.reduce(
+            function(max, groupEvent) {
+
+              return Math.max(
+                max,
+                groupEvent._weekColumn + 1
+              );
+
+            },
+            1
+          ),
+          1
+        );
+
+    });
+
+    /* ==================================
+       DRAW EVENTS
+       ================================== */
+
+    dayEvents.forEach(function(event) {
+
+      const eventStart =
+        new Date(event.start);
+
+      const eventEnd =
+        new Date(event.end);
+
+
+      /* ==================================
+         POSITION
+         ================================== */
+
+      const startMinutes =
+        eventStart.getHours() * 60 +
+        eventStart.getMinutes();
+
+      let endMinutes =
+        eventEnd.getHours() * 60 +
+        eventEnd.getMinutes();
+
+      if (
+        eventEnd.getDate() !==
+        eventStart.getDate()
+      ) {
+
+        endMinutes = 1440;
+
+      }
+
+
+      const top =
+        startMinutes;
+
+      const duration =
+        Math.max(
+          endMinutes - startMinutes,
+          30
+        );
+
+
+      /* ==================================
+         EVENT CARD
+         ================================== */
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "event-card week-event";
+
+      card.style.position =
+        "absolute";
+
+      card.style.top =
+        top + "px";
+
+      card.style.height =
+        duration + "px";
+
+
+      /* ==================================
+         OVERLAP WIDTH
+         ================================== */
+
+      const column =
+        event._weekColumn || 0;
+
+      const columnCount =
+        event._weekColumnCount || 1;
+
+      const gap =
+        5;
+
+      const width =
+        100 / columnCount;
+
+      card.style.left =
+        "calc(" +
+        (column * width) +
+        "% + " +
+        gap +
+        "px)";
+
+      card.style.width =
+        "calc(" +
+        width +
+        "% - " +
+        (gap * 2) +
+        "px)";
+
+      card.style.right =
+        "auto";
+
+
+      /* Color */
+
+      const color =
+        calendarColors[event.calendar]
+        || "#777777";
+
+      card.style.backgroundColor =
+        color;
+
+      card.style.borderColor =
+        color;
+
+      card.style.color =
+        getReadableTextColor(color);
+
+
+      /* Past event */
+
+      if (
+        eventEnd < new Date()
+      ) {
+
+        card.classList.add(
+          "past-event"
+        );
+
+      }
+
+
+      /* Title */
+
+      const title =
+        document.createElement("div");
+
+      title.className =
+        "event-title";
+
+      if (
+        event.calendar ===
+        "Holidays in United States"
+      ) {
+
+        title.textContent =
+          event.title;
+
+      } else {
+
+        title.textContent =
+          event.calendar;
+
+      }
+
+
+      /* Time */
+
+      const time =
+        document.createElement("div");
+
+      time.className =
+        "event-time";
+
+      if (event.allDay) {
+
+        time.textContent =
+          "All day";
+
+      } else {
+
+        time.textContent =
+          formatTime(eventStart) +
+          " – " +
+          formatTime(eventEnd);
+
+      }
+
+
+      card.appendChild(title);
+      card.appendChild(time);
+
+
+      /* Popup */
+
+      card.onclick =
+        function(e) {
+
+          e.stopPropagation();
+
+          showEventPopup(event);
+
+        };
+
+
+      body.appendChild(card);
+
+    });
+
+
+    grid.appendChild(cell);
+
+  }
+
+
+  /* ==================================
+     START WEEK VIEW AT 6:00 AM
+     ================================== */
+
+  grid.scrollTop = 360;
+
+}
+
+function preloadAdjacentMonths() {
+
+  const months = [
+    1,
+    -1
+  ];
+
+  months.forEach(function(offset) {
+
+    const date =
+      new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + offset,
+        1
+      );
+
+    const year =
+      date.getFullYear();
+
+    const month =
+      date.getMonth() + 1;
+
+    const cacheKey =
+      year + "_" + month;
+
+
+    /* Don't request a month
+       we already have */
+
+    if (browserCalendarCache[cacheKey]) {
+      return;
+    }
+
+
+    apiGet("events", {
+      year: year,
+      month: month
+    })
+      .then(function(events) {
+
+        browserCalendarCache[cacheKey] =
+          events;
+
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+
+  });
+
+}
+
+
+
+  /* ==========================================
+     DRAW CALENDAR
+     ========================================== */
+
+  function drawCalendar(
+    year,
+    month,
+    events
+  ) {
+
+    const grid =
+      document.getElementById(
+        "calendarGrid"
+      );
+
+    grid.className = "month-grid";
+
+    grid.innerHTML = "";
+
+    /* ======================================
+   GROUP EVENTS BY DATE
+   ====================================== */
+
+    const eventsByDate = {};
+
+    events
+    .filter(function(event) {
+      return selectedCalendars[event.calendar];
+    })
+    .forEach(function(event) {
+
+      const eventDate =
+        new Date(event.start);
+
+      const key =
+        eventDate.getFullYear() +
+        "-" +
+        (eventDate.getMonth() + 1) +
+        "-" +
+        eventDate.getDate();
+
+      if (!eventsByDate[key]) {
+
+        eventsByDate[key] = [];
+
+      }
+
+  eventsByDate[key].push(event);
+
+});
+
+
+    const firstDay =
+      new Date(
+        year,
+        month - 1,
+        1
+      );
+
+
+    const firstWeekday =
+      firstDay.getDay();
+
+
+    const daysInMonth =
+      new Date(
+        year,
+        month,
+        0
+      ).getDate();
+
+
+    const daysInPreviousMonth =
+      new Date(
+        year,
+        month - 1,
+        0
+      ).getDate();
+
+
+    /* ======================================
+       PREVIOUS MONTH DAYS
+       ====================================== */
+
+    for (
+      let i = firstWeekday - 1;
+      i >= 0;
+      i--
+    ) {
+
+      const dayNumber =
+        daysInPreviousMonth - i;
+
+
+      const cell =
+        createDayCell(
+          dayNumber,
+          true
+        );
+
+
+      grid.appendChild(cell);
+
+    }
+
+
+    /* ======================================
+       CURRENT MONTH DAYS
+       ====================================== */
+
+    for (
+      let day = 1;
+      day <= daysInMonth;
+      day++
+    ) {
+
+      const cell =
+        createDayCell(
+          day,
+          false
+        );
+
+      const eventContainer =
+        document.createElement("div");
+
+      eventContainer.className =
+        "day-events";
+
+      cell.appendChild(eventContainer);
+
+
+     /* Find events for this day */
+
+        const eventKey =
+          year +
+          "-" +
+          month +
+          "-" +
+          day;
+
+        const dayEvents =
+          eventsByDate[eventKey] || [];
+
+
+        /* Sort events by start time */
+
+        dayEvents.sort(function(a, b) {
+
+          return (
+            new Date(a.start) -
+            new Date(b.start)
+            );
+
+        });
+
+
+/* ==================================
+   CREATE EVENT CARDS
+   ================================== */
+
+/*
+ * Show only the first 3 events.
+ * Any additional events are hidden
+ * behind a "+N more" link.
+ */
+
+const maxVisibleEvents = 3;
+
+dayEvents.forEach(function(event, index) {
+
+  // Dim events that have already ended
+
+  const eventEnd =
+    new Date(event.end);
+
+  const now =
+    new Date();
+
+  const isPast =
+    eventEnd < now;
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "event-card";
+
+  if (isPast) {
+
+    card.classList.add(
+      "past-event"
+    );
+
+  }
+
+  /* Hide events beyond the first 3 */
+
+  if (index >= maxVisibleEvents) {
+
+    card.style.display =
+      "none";
+
+    card.classList.add(
+      "extra-event"
+    );
+
+  }
+
+  /* Calendar color */
+
+  const color =
+    calendarColors[event.calendar]
+    || "#777777";
+
+  card.style.backgroundColor =
+    color;
+
+  card.style.borderColor =
+    color;
+
+  /* Automatically select
+     readable text */
+
+  card.style.color =
+    getReadableTextColor(color);
+
+  /* Event title */
+
+  const title =
+    document.createElement("div");
+
+  title.className =
+    "event-title";
+
+  /*
+   * Display the calendar name for
+   * Tai Chi and Qigong events.
+   *
+   * For US holidays, display the
+   * actual holiday name instead.
+   */
+
+  if (
+    event.calendar ===
+    "Holidays in United States"
+  ) {
+
+    title.textContent =
+      event.title;
+
+  } else {
+
+    title.textContent =
+      event.calendar;
+
+  }
+
+  /* Event time */
+
+  const time =
+    document.createElement("div");
+
+  time.className =
+    "event-time";
+
+  if (event.allDay) {
+
+    time.textContent =
+      "All day";
+
+  } else {
+
+    const start =
+      new Date(event.start);
+
+    const end =
+      new Date(event.end);
+
+    time.textContent =
+      formatTime(start) +
+      " – " +
+      formatTime(end);
+
+  }
+
+  card.appendChild(title);
+
+  card.appendChild(time);
+
+  /*
+   * Temporary click behavior.
+   */
+
+    /*
+  * Open event inside the web app.
+  */
+
+  card.onclick = function(e) {
+
+    e.stopPropagation();
+
+    showEventPopup(event);
+
+  };
+
+  eventContainer.appendChild(card);
+  /*cell.appendChild(card);*/
+
+});
+
+
+/* ==================================
+   "+N MORE" LINK
+   ================================== */
+
+/* ==================================
+   "+N MORE" POPUP
+   ================================== */
+
+if (dayEvents.length > maxVisibleEvents) {
+
+  const more =
+    document.createElement("div");
+
+  more.className =
+    "more-events";
+
+  more.textContent =
+    "+" +
+    (dayEvents.length -
+      maxVisibleEvents) +
+    " more";
+
+
+  more.onclick = function(e) {
+
+    e.stopPropagation();
+
+
+    /* If popup already exists,
+       close it */
+
+    const existingPopup =
+      cell.querySelector(
+        ".more-popup"
+      );
+
+    if (existingPopup) {
+
+      existingPopup.remove();
+
+      return;
+
+    }
+
+
+    /* Create popup */
+
+    const popup =
+      document.createElement("div");
+
+    popup.className =
+      "more-popup";
+
+
+    /* Create event cards from
+       the original event data */
+
+    dayEvents
+      .slice(maxVisibleEvents)
+      .forEach(function(event) {
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "event-card";
+
+
+        /* Calendar color */
+
+        const color =
+          calendarColors[event.calendar]
+          || "#777777";
+
+
+        card.style.backgroundColor =
+          color;
+
+        card.style.borderColor =
+          color;
+
+
+        /* Readable text */
+
+        card.style.color =
+          getReadableTextColor(color);
+
+
+        /* Dim past events */
+
+        const eventEnd =
+          new Date(event.end);
+
+        if (eventEnd < new Date()) {
+
+          card.classList.add(
+            "past-event"
+          );
+
+        }
+
+
+        /* Event title */
+
+        const title =
+          document.createElement("div");
+
+        title.className =
+          "event-title";
+
+
+        if (
+          event.calendar ===
+          "Holidays in United States"
+        ) {
+
+          title.textContent =
+            event.title;
+
+        } else {
+
+          title.textContent =
+            event.calendar;
+
+        }
+
+
+        /* Event time */
+
+        const time =
+          document.createElement("div");
+
+        time.className =
+          "event-time";
+
+
+        if (event.allDay) {
+
+          time.textContent =
+            "All day";
+
+        } else {
+
+          const start =
+            new Date(event.start);
+
+          const end =
+            new Date(event.end);
+
+          time.textContent =
+            formatTime(start) +
+            " – " +
+            formatTime(end);
+
+        }
+
+
+        card.appendChild(title);
+
+        card.appendChild(time);
+
+
+        /* Keep the same temporary
+           click behavior */
+
+        card.onclick = function(e) {
+
+          e.stopPropagation();
+
+          showEventPopup(event);
+
+        };
+
+
+        popup.appendChild(card);
+
+      });
+
+
+    cell.appendChild(popup);
+
+  };
+
+
+  cell.dayHeader.appendChild(more);
+
+}
+
+      grid.appendChild(cell);
+
+    }
+
+
+    /* ======================================
+       FOLLOWING MONTH DAYS
+       ====================================== */
+
+    const totalCells =
+      firstWeekday +
+      daysInMonth;
+
+
+    const remaining =
+      totalCells % 7 === 0
+        ? 0
+        : 7 - (totalCells % 7);
+
+
+    for (
+      let day = 1;
+      day <= remaining;
+      day++
+    ) {
+
+      const cell =
+        createDayCell(
+          day,
+          true
+        );
+
+
+      grid.appendChild(cell);
+
+    }
+
+  }
+
+
+  /* ==========================================
+     CREATE DAY CELL
+     ========================================== */
+
+function createDayCell(dayNumber, otherMonth) {
+
+  const cell =
+    document.createElement("div");
+
+  cell.className =
+    "day";
+
+  if (otherMonth) {
+    cell.classList.add("other-month");
+  }
+
+  const header =
+    document.createElement("div");
+
+  header.className =
+    "day-header";
+
+  const number =
+    document.createElement("div");
+
+  number.className =
+    "day-number";
+
+  number.textContent =
+    dayNumber;
+
+  header.appendChild(number);
+
+  cell.appendChild(header);
+
+  cell.dayHeader = header;
+
+  const today =
+    new Date();
+
+  if (
+    !otherMonth &&
+    today.getFullYear() === currentDate.getFullYear() &&
+    today.getMonth() === currentDate.getMonth() &&
+    today.getDate() === dayNumber
+  ) {
+    cell.classList.add("today");
+  }
+
+  return cell;
+}
+
+
+  /* ==========================================
+     FORMAT TIME
+     ========================================== */
+
+  function formatTime(date) {
+
+    return date.toLocaleTimeString(
+      [],
+      {
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    );
+
+  }
+
+
+  /* ==========================================
+     READABLE TEXT COLOR
+     ========================================== */
+
+  function getReadableTextColor(hex) {
+
+    hex =
+      hex.replace("#", "");
+
+
+    const r =
+      parseInt(
+        hex.substring(0, 2),
+        16
+      );
+
+
+    const g =
+      parseInt(
+        hex.substring(2, 4),
+        16
+      );
+
+
+    const b =
+      parseInt(
+        hex.substring(4, 6),
+        16
+      );
+
+
+    const brightness =
+      (
+        r * 299 +
+        g * 587 +
+        b * 114
+      ) / 1000;
+
+
+    return brightness > 155
+      ? "#222222"
+      : "#FFFFFF";
+
+  }
+
+/* ==========================================
+   VIEW SWITCHING
+   ========================================== */
+
+  function showMonthView() {
+
+  currentView = "month";
+
+  document
+    .getElementById("monthWeekdays")
+    .style.display = "grid";
+
+  /*document
+    .getElementById("monthViewButton")
+    .classList.add("active");
+
+  document
+    .getElementById("weekViewButton")
+    .classList.remove("active");
+
+  document
+    .getElementById("scheduleViewButton")
+    .classList.remove("active");*/
+
+  loadCalendar();
+}
+
+
+function showWeekView() {
+
+  currentView = "week";
+
+  document
+    .getElementById("monthWeekdays")
+    .style.display = "none";
+
+  /*document
+    .getElementById("weekViewButton")
+    .classList.add("active");
+
+  document
+    .getElementById("monthViewButton")
+    .classList.remove("active");
+
+  document
+    .getElementById("scheduleViewButton")
+    .classList.remove("active");*/
+
+
+  loadCalendar();
+}
+
+function showScheduleView() {
+
+  currentView = "schedule";
+
+  document
+    .getElementById("monthWeekdays")
+    .style.display = "none";
+
+  /*document
+    .getElementById("monthViewButton")
+    .classList.remove("active");
+
+  document
+    .getElementById("weekViewButton")
+    .classList.remove("active");
+
+  document
+    .getElementById("scheduleViewButton")
+    .classList.add("active");*/
+
+  loadCalendar();
+}
+
+function changeCalendarView(view) {
+
+  if (view === "month") {
+    showMonthView();
+
+  } else if (view === "week") {
+    showWeekView();
+
+  } else if (view === "schedule") {
+    showScheduleView();
+  }
+
+}
+
+function updateCalendarFilter(checkbox) {
+
+  const calendarName =
+    checkbox.dataset.calendar;
+
+  selectedCalendars[calendarName] =
+    checkbox.checked;
+
+  const checkboxes =
+    document.querySelectorAll(
+      '#calendarFilterPanel input[data-calendar]'
+    );
+
+  updateAllCalendarsCheckbox();
+
+  localStorage.setItem(
+    "calendarFilters",
+    JSON.stringify(selectedCalendars)
+  );
+
+  loadCalendar();
+
+}
+
+function toggleAllCalendars(checkbox) {
+
+  const checkboxes =
+    document.querySelectorAll(
+      '#calendarFilterPanel input[data-calendar]'
+    );
+
+  checkboxes.forEach(function(calendarCheckbox) {
+
+    calendarCheckbox.checked =
+      checkbox.checked;
+
+    selectedCalendars[
+      calendarCheckbox.dataset.calendar
+    ] = checkbox.checked;
+
+  });
+
+  localStorage.setItem(
+    "calendarFilters",
+    JSON.stringify(selectedCalendars)
+  );
+
+  loadCalendar();
+
+}
+
+
+  /* ==========================================
+     PREVIOUS MONTH
+     ========================================== */
+
+  function previousPeriod() {
+
+    if (currentView === "week") {
+
+      currentDate.setDate(
+        currentDate.getDate() - 7
+      );
+
+      loadWeekView();
+
+    } else if (currentView === "schedule") {
+
+      currentDate.setDate(currentDate.getDate() - 1);
+
+      loadScheduleView();
+
+    } else {
+
+      currentDate.setMonth(
+        currentDate.getMonth() - 1
+      );
+
+      loadCalendar();
+
+    }
+
+  } 
+
+  function toggleCalendarFilters() {
+
+    const panel =
+      document.getElementById(
+        "calendarFilterPanel"
+      );
+
+    panel.classList.toggle("show");
+
+  }
+
+  document.addEventListener("click", function(event) {
+
+    const panel =
+      document.getElementById(
+        "calendarFilterPanel"
+      );
+
+    const button =
+      document.getElementById(
+        "calendarFilterButton"
+      );
+
+    if (!panel || !button) {
+      return;
+    }
+
+    if (
+      panel.classList.contains("show") &&
+      !panel.contains(event.target) &&
+      !button.contains(event.target)
+    ) {
+      panel.classList.remove("show");
+    }
+
+  });
+
+
+  /* ==========================================
+     NEXT MONTH
+     ========================================== */
+
+  function nextPeriod() {
+
+    if (currentView === "week") {
+
+      currentDate.setDate(
+        currentDate.getDate() + 7
+      );
+
+      loadWeekView();
+
+    } else if (currentView === "schedule") {
+
+      currentDate.setDate(currentDate.getDate() + 1);
+
+      loadScheduleView();
+
+    } else {
+
+      currentDate.setMonth(
+        currentDate.getMonth() + 1
+      );
+
+      loadCalendar();
+
+    }
+
+  }
+
+
+  /* ==========================================
+     TODAY
+     ========================================== */
+
+  function goToday() {
+
+    currentDate =
+      new Date();
+
+
+    loadCalendar();
+
+  }
+
+  function showEventPopup(event) {
+
+  /* Remove any existing popup */
+
+  const existing =
+    document.getElementById(
+      "event-detail-overlay"
+    );
+
+  if (existing) {
+    existing.remove();
+  }
+
+
+  /* Overlay */
+
+  const overlay =
+    document.createElement("div");
+
+  overlay.id =
+    "event-detail-overlay";
+
+  overlay.className =
+    "event-detail-overlay";
+
+
+  /* Popup */
+
+  const popup =
+    document.createElement("div");
+
+  popup.className =
+    "event-detail-popup";
+
+  popup.style.borderTop =
+    "6px solid " +
+    (event.color || "#777777");
+
+  /* Title */
+
+  const title =
+    document.createElement("h2");
+
+  title.textContent =
+    event.title ||
+    event.calendar ||
+    "Calendar Event";
+
+
+  /* Calendar */
+
+  const calendar =
+    document.createElement("div");
+
+  calendar.className =
+    "event-detail-calendar";
+
+  calendar.textContent =
+    event.calendar || "";
+
+
+  /* Date / time */
+
+  const dateTime =
+    document.createElement("div");
+
+  dateTime.className =
+    "event-detail-time";
+
+
+  const start =
+    new Date(event.start);
+
+  const end =
+    new Date(event.end);
+
+
+  if (event.allDay) {
+
+    dateTime.textContent =
+      start.toLocaleDateString(
+        undefined,
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }
+      ) +
+      " • All day";
+
+  } else {
+
+    dateTime.textContent =
+      start.toLocaleDateString(
+        undefined,
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }
+      ) +
+      " • " +
+      formatTime(start) +
+      " – " +
+      formatTime(end);
+
+  }
+
+
+  /* Location */
+
+  const location =
+    document.createElement("div");
+
+  location.className =
+    "event-detail-location";
+
+  if (event.location) {
+
+    location.textContent =
+      "📍 " +
+      event.location;
+
+  }
+
+
+  /* Close button */
+
+  const close =
+    document.createElement("button");
+
+  close.className =
+    "event-detail-close";
+
+  close.textContent =
+    "Close";
+
+  close.onclick =
+    function() {
+
+      overlay.remove();
+
+    };
+
+
+  /* Assemble */
+
+  popup.appendChild(title);
+
+  if (event.calendar && event.calendar !== event.title) {
+    popup.appendChild(calendar);
+  }
+
+  popup.appendChild(dateTime);
+
+  popup.appendChild(location);
+
+  if (event.location) {
+
+    const mapButton =
+    document.createElement("button");
+
+    mapButton.className =
+      "event-detail-map";
+
+    mapButton.textContent =
+      "Open in Google Maps";
+
+    mapButton.onclick =
+      function(e) {
+
+      e.stopPropagation();
+
+      const mapUrl =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(event.location.trim());
+
+      window.open(
+        mapUrl,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    };
+    
+    popup.appendChild(mapButton);
+  }
+
+  popup.appendChild(close);
+
+  overlay.appendChild(popup);
+
+  document.body.appendChild(overlay);
+
+
+  /* Close by clicking outside */
+
+  overlay.onclick =
+    function(e) {
+
+      if (e.target === overlay) {
+        overlay.remove();
+      }
+
+    };
+
+}
+
+
+  /* ==========================================
+     START
+     ========================================== */
+
+  //restoreCalendarFilters();
+  //loadCalendar();
+  loadCalendarConfig();
+
+</script>
+
+</body>
+</html>
