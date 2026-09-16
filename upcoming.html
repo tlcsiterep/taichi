@@ -178,30 +178,35 @@
       );
 
 
-      google.script.run
-
-        .withSuccessHandler(function(events) {
-
+      apiGet("upcoming", {
+        start: startDate.toISOString(),
+        end: endDate.toISOString()
+      })
+        .then(function(events) {
+      
           // Save the events temporarily.
           window.upcomingEventsData =
             events;
-
+      
           // If calendar configuration
           // has already loaded, process now.
           if (
             Object.keys(selectedCalendars).length > 0
           ) {
-
+      
             processUpcomingEvents(events);
-
+      
           }
-
+      
         })
-
-        .getUpcomingEvents(
-          startDate.toISOString(),
-          endDate.toISOString()
-        );
+        .catch(function(error) {
+      
+          console.error(error);
+      
+          document.getElementById("scheduleFeed").innerHTML =
+            '<div class="empty-message">Unable to load upcoming sessions.</div>';
+      
+        });
     }
 
 
