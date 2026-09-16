@@ -1056,42 +1056,138 @@
 
   let  calendarColors = {};
 
-  function loadCalendarConfig() {
+ ```javascript
+function loadCalendarConfig() {
 
-    apiGet("calendarList")
-      .then(function(config) {
+  /*
+   * Start the events request immediately.
+   * It can run at the same time as calendarList.
+   */
 
-        calendarColors = {};
+  const year =
+    currentDate.getFullYear();
 
-        const currentCalendarNames =
+  const month =
+    currentDate.getMonth() + 1;
+
+  prefetchedCalendarEvents =
+    apiGet("events", {
+      year: year,
+      month: month
+    });
+
+
+  /*
+   * Get calendar configuration.
+   */
+
+  apiGet("calendarList")
+    .then(function(config) {
+
+      calendarColors = {};
+
+      const currentCalendarNames =
         config.map(function(calendar) {
           return calendar.name;
         });
 
-        Object.keys(selectedCalendars).forEach(function(calendarName) {
-          if (!currentCalendarNames.includes(calendarName)) {
-            delete selectedCalendars[calendarName];
-          }
-        });
-        
-        config.forEach(function(calendar) {
-          calendarColors[calendar.name] = calendar.color;
-          if (!(calendar.name in selectedCalendars)) {
-            selectedCalendars[calendar.name] = true;
-          }
-        });
-
-        restoreCalendarFilters();
-        loadCalendar();
-
-      })
-      .catch(function(error) {
-        console.error(error);
-        document.getElementById("calendarGrid").innerHTML =
-          '<div style="padding:30px;text-align:center;color:#777;">Unable to load calendar data.</div>';
+      Object.keys(selectedCalendars).forEach(function(calendarName) {
+        if (!currentCalendarNames.includes(calendarName)) {
+          delete selectedCalendars[calendarName];
+        }
       });
 
-  } 
+      config.forEach(function(calendar) {
+        calendarColors[calendar.name] = calendar.color;
+
+        if (!(calendar.name in selectedCalendars)) {
+          selectedCalendars[calendar.name] = true;
+        }
+      });
+
+      restoreCalendarFilters();
+
+      /*
+       * Wait for the events request that was already started.
+       */
+
+      prefetchedCalendarEvents
+        .then(function(events) {
+
+          const cacheKey =
+            year + "_" + month;
+
+          browserCalendarCache[cacheKey] =
+            events;
+
+          loadCalendar();
+
+        })
+        .catch(function(error) {
+          console.error(error);
+
+          document.getElementById("calendarGrid").innerHTML =
+            '<div style="padding:30px;text-align:center;color:#777;">Unable to load calendar events.</div>';
+        });
+
+    })
+    .catch(function(error) {
+
+      console.error(error);
+
+      document.getElementById("calendarGrid").innerHTML =
+        '<div style="padding:30px;text-align:center;color:#777;">Unable to load calendar data.</div>';
+
+    });
+
+}
+```
+
+### What changed
+
+Before:
+
+```text
+calendarList
+     ↓
+wait ~6 seconds
+     ↓
+events
+     ↓
+wait ~6 seconds
+     ↓
+calendar appears
+```
+
+Now:
+
+```text
+calendarList ──────────────┐
+                            ├── calendar appears
+events ────────────────────┘
+```
+
+Both requests start immediately.
+
+**Your 60-second GAS event cache is untouched**, so we haven't sacrificed event freshness.
+
+### Test
+
+Save the GitHub version and reload the calendar in Google Sites.
+
+Then look at the browser Network timing again.
+
+I'm particularly interested in whether you now see:
+
+```text
+api=calendarlist
+api=events&year=2026&month=...
+```
+
+starting at roughly the **same time**.
+
+Tell me the two times you get.
+
 
 
   /* ==========================================
