@@ -1063,11 +1063,22 @@
 
         calendarColors = {};
 
+        const currentCalendarNames =
+        config.map(function(calendar) {
+          return calendar.name;
+        });
+
+        Object.keys(selectedCalendars).forEach(function(calendarName) {
+          if (!currentCalendarNames.includes(calendarName)) {
+            delete selectedCalendars[calendarName];
+          }
+        });
+        
         config.forEach(function(calendar) {
           calendarColors[calendar.name] = calendar.color;
           if (!(calendar.name in selectedCalendars)) {
             selectedCalendars[calendar.name] = true;
-}
+          }
         });
 
         restoreCalendarFilters();
