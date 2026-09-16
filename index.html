@@ -1194,7 +1194,7 @@
   }
 
  const savedCalendarFilters =
-    localStorage.getItem("calendarFilters");
+  localStorage.getItem("calendarFilters");
 
 if (savedCalendarFilters) {
   try {
@@ -1202,11 +1202,18 @@ if (savedCalendarFilters) {
       JSON.parse(savedCalendarFilters);
 
     Object.keys(saved).forEach(function(calendarName) {
-      selectedCalendars[calendarName] = saved[calendarName];
+
+      if (calendarName in calendarColors) {
+        selectedCalendars[calendarName] =
+          saved[calendarName];
+      }
+
     });
 
   } catch (error) {
-    console.log("Could not load saved calendar filters.");
+    console.log(
+      "Could not load saved calendar filters."
+    );
   }
 }
 
