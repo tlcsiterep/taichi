@@ -1062,9 +1062,9 @@ function loadCalendarConfig() {
       year: currentDate.getFullYear(),
       month: currentDate.getMonth() + 1
     })
-    .then(function(data) {
+    .then(function(config) {
 
-      initialCalendarData = data;
+      initialCalendarData = config;
       
       calendarColors = {};
 
