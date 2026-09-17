@@ -1107,18 +1107,19 @@ function loadCalendarConfig() {
   
   let selectedCalendars = {};
 
- /*   "Beginner Tai Chi": true,
+ const browserCalendarCache = {};
 
-    "Advanced Tai Chi": true,
+  let selectedCalendars = {};
+  
+  const savedFilters =
+    localStorage.getItem("calendarFilters");
+  
+  if (savedFilters) {
+    selectedCalendars =
+      JSON.parse(savedFilters);
+  }
 
-    "Qigong": true,
-
-    "Intermediate Tai Chi": true,
-
-    "Holidays in United States": true
-
-  };*/
-
+  
   function restoreCalendarFilters() {
 
     const filterList =
