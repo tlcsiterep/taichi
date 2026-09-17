@@ -1069,7 +1069,7 @@ function loadCalendarConfig() {
       calendarColors = {};
 
       const currentCalendarNames =
-        config.map(function(calendar) {
+        config.calendars.map(function(calendar) {
           return calendar.name;
         });
 
@@ -1079,7 +1079,7 @@ function loadCalendarConfig() {
         }
       });
 
-      config.forEach(function(calendar) {
+      config.calendars.forEach(function(calendar) {
         calendarColors[calendar.name] = calendar.color;
 
         if (!(calendar.name in selectedCalendars)) {
