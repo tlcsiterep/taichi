@@ -1058,16 +1058,8 @@
 
 function loadCalendarConfig() {
 
-  apiGet("initialData", {
-    year: currentDate.getFullYear(),
-    month: currentDate.getMonth() + 1
-  })
-  .then(function(data) {
-
-    initialCalendarData = data;
-
-    const config =
-      data.calendars;
+    apiGet("calendarList")
+    .then(function(config) {
 
     calendarColors = {};
 
