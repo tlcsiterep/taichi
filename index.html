@@ -1282,30 +1282,6 @@ function loadCalendar() {
 
   }
 
-  if (
-    initialCalendarData &&
-    initialCalendarData.events
-  ) {
-  
-    const events =
-      initialCalendarData.events;
-  
-    browserCalendarCache[cacheKey] =
-      events;
-  
-    initialCalendarData = null;
-  
-    drawCalendar(
-      year,
-      month,
-      events
-    );
-  
-    setTimeout(preloadAdjacentMonths, 100);
-  
-    return;
-  }
-
   /* Otherwise get events from server */
 
   apiGet("events", {
