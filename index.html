@@ -1108,13 +1108,7 @@ function loadCalendarConfig() {
 
  const browserCalendarCache = {};
 
-  const savedFilters =
-    localStorage.getItem("calendarFilters");
-  
-  if (savedFilters) {
-    selectedCalendars =
-      JSON.parse(savedFilters);
-  }
+  let selectedCalendars = {};
 
   
   function restoreCalendarFilters() {
