@@ -1008,9 +1008,17 @@ function loadCalendarConfig() {
 
       calendarColors = {};
 
-      config.forEach(function(calendar) {
-        calendarColors[calendar.name] = calendar.color;
-        selectedCalendars[calendar.name] = true;
+     config.forEach(function(calendar) {
+      calendarColors[calendar.name] = calendar.color;
+    
+        /* Only default a calendar to "on" the first
+           time we see it. If a saved filter already
+           set this calendar's state (from localStorage,
+           loaded before this API call resolved), keep
+           that instead of overwriting it back to true. */
+        if (typeof selectedCalendars[calendar.name] === "undefined") {
+          selectedCalendars[calendar.name] = true;
+        }
       });
 
       restoreCalendarFilters();
