@@ -1024,7 +1024,7 @@ function loadCalendarConfig() {
       restoreCalendarFilters();
       loadCalendar();
 
-    });
+    })
     .catch(function(error) {
 
       console.error("Failed to load calendar list:", error);
@@ -1032,8 +1032,6 @@ function loadCalendarConfig() {
       showApiError(
         "Couldn't load the calendar list. Check APPS_SCRIPT_URL and that the Apps Script is deployed for \"Anyone\" access."
       );
-
-    });
 
 }
 
@@ -2618,61 +2616,61 @@ function preloadAdjacentMonths() {
 
 const maxVisibleEvents = 3;
 
-dayEvents.forEach(function(event, index) {
+        dayEvents.forEach(function (event, index) {
 
-  // Dim events that have already ended
+            // Dim events that have already ended
 
-  const eventEnd =
-    new Date(event.end);
+            const eventEnd =
+                new Date(event.end);
 
-  const now =
-    new Date();
+            const now =
+                new Date();
 
-  const isPast =
-    eventEnd < now;
+            const isPast =
+                eventEnd < now;
 
-  const card =
-    document.createElement("div");
+            const card =
+                document.createElement("div");
 
-  card.className =
-    "event-card";
+            card.className =
+                "event-card";
 
-  if (isPast) {
+            if (isPast) {
 
-    card.classList.add(
-      "past-event"
-    );
+                card.classList.add(
+                    "past-event"
+                );
 
-  }
+            }
 
-  /* Hide events beyond the first 3 */
+            /* Hide events beyond the first 3 */
 
-  if (index >= maxVisibleEvents) {
+            if (index >= maxVisibleEvents) {
 
-    card.style.display =
-      "none";
+                card.style.display =
+                    "none";
 
-    card.classList.add(
-      "extra-event"
-    );
+                card.classList.add(
+                    "extra-event"
+                );
 
-  }
+            }
 
-  /* Calendar color */
+            /* Calendar color */
 
-  const color =
-    calendarColors[event.calendar]
-    || "#777777";
+            const color =
+                calendarColors[event.calendar]
+                || "#777777";
 
-  card.style.backgroundColor =
-    color;
+            card.style.backgroundColor =
+                color;
 
-  card.style.borderColor =
-    color;
+            card.style.borderColor =
+                color;
 
-  /* Automatically select
-     readable text */
-
+            /* Automatically select
+               readable text */
+        };}
   card.style.color =
     getReadableTextColor(color);
 
