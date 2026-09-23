@@ -545,7 +545,7 @@ function SetupScreen({ clientId, setClientId, gisReady, error, onConnect }) {
 const VIEWS = ["Month", "Week", "Schedule"];
 
 function App() {
-  const [clientId, setClientId] = useState(() => localStorage.getItem("gcal_client_id") || "");
+  const [clientId, setClientId] = useState(() => localStorage.getItem("gcal_client_id") || "778571516682-djlqjon5n3057ov6o786q92g73kf4rv7.apps.googleusercontent.com ");
   useEffect(() => { if (clientId) localStorage.setItem("gcal_client_id", clientId); }, [clientId]);
 
   const { token, error: authError, gisReady, signIn, signOut } = useGoogleAuth(clientId);
