@@ -315,7 +315,7 @@ function MonthView({ anchorDate, eventsByDay, onPickEvent, onPickDay }) {
               <div className="flex-1 min-h-0 space-y-1 overflow-hidden">
                 {visible.map((ev) => (
                   <div key={ev.id + key} onClick={(e) => { e.stopPropagation(); onPickEvent(ev, e); }}
-                    className="event-pill text-base leading-5 px-2 py-1 rounded-lg truncate text-white font-medium shadow-sm"
+                    className="event-pill text-base leading-5 px-2 py-1 rounded-md truncate text-white font-medium shadow-sm"
                     style={{ background: ev.color }}>
                     {!ev.allDay && <span className="opacity-90">{fmtTime(ev.start)} </span>}
                     {ev.title}
