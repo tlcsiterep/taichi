@@ -281,7 +281,7 @@ function MonthView({ anchorDate, eventsByDay, onPickEvent, onPickDay }) {
       <div className="grid grid-cols-7 border-b border-gray-200 text-xs font-medium text-gray-500 shrink-0">
         {WEEKDAYS_SHORT.map((w) => <div key={w} className="py-2 text-center">{w}</div>)}
       </div>
-      <div className="grid grid-cols-7 grid-rows-6 flex-1 min-h-0 gap-px" style={{ background: "#708090" }}>
+      <div className="grid grid-cols-7 grid-rows-6 flex-1 min-h-0 gap-px" style={{ background: "#F5F5F5" }}>
         {days.map((d) => {
           const key = dateKey(d);
           const dayEvents = eventsByDay.get(key) || [];
