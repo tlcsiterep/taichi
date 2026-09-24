@@ -291,7 +291,7 @@ function MonthView({ anchorDate, eventsByDay, onPickEvent, onPickDay }) {
           const overflow = dayEvents.length - visible.length;
           return (
             <div key={key} onClick={() => onPickDay(d, dayEvents)}
-              className={`day-cell p-1 flex flex-col min-h-0 cursor-pointer ${inMonth ? "bg-white" : "bg-gray-50/70"}`}>
+              className={`day-cell p-1 flex flex-col min-h-0 cursor-pointer ${inMonth ? "#F5F5F5" : "bg-gray-50/70"}`}>
               <div className="flex justify-end mb-1">
                 <span className={`text-xs w-6 h-6 flex items-center justify-center rounded-full ${isToday ? "bg-blue-600 text-white font-semibold" : inMonth ? "text-gray-700" : "text-gray-400"}`}>
                   {d.getDate()}
