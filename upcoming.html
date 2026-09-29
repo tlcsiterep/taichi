@@ -117,6 +117,8 @@
 
     let upcomingEventsData = [];
 
+    const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
+
 
     /*
      * Load calendar configuration and events
@@ -128,9 +130,12 @@
       const cacheMode =
         forceRefresh ? "no-cache" : "default";
 
-      fetch("calendar.json", {
-        cache: cacheMode
-      })
+      fetch(
+        "calendar.json?refresh=" + Date.now(),
+        {
+          cache: "no-store"
+        }
+      )
 
       .then(function(response) {
 
@@ -487,6 +492,16 @@
      */
 
     loadCalendarData(false);
+
+    /*
+     * Automatically check for updated calendar data every 5 minutes.
+     * This refreshes calendar.json without reloading the webpage.
+     */
+    setInterval(function() {
+
+      loadCalendarData(true);
+
+    }, AUTO_REFRESH_INTERVAL);
 
   </script>
 
