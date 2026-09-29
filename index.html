@@ -1048,6 +1048,8 @@
 
   let  calendarColors = {};
 
+const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
+
 function refreshCalendarData() {
 
   const button =
@@ -3707,6 +3709,19 @@ function toggleAllCalendars(checkbox) {
   //restoreCalendarFilters();
   //loadCalendar();
   loadCalendarConfig();
+
+  /*
+   * Automatically check for updated calendar data every 5 minutes.
+   * This refreshes calendar.json without reloading the webpage.
+   */
+  setInterval(function() {
+
+    const preservedSelections =
+      Object.assign({}, selectedCalendars);
+
+    loadCalendarConfig(preservedSelections);
+
+  }, AUTO_REFRESH_INTERVAL);
 
 </script>
 
