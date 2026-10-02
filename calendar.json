@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-02T15:39:35.641Z",
-  "start": "2026-10-01T07:00:00.000Z",
+  "updated": "2026-10-02T15:48:52.187Z",
+  "start": "2026-09-01T07:00:00.000Z",
   "end": "2027-10-01T07:00:00.000Z",
   "calendars": [
     {
@@ -33,6 +33,366 @@
     }
   ],
   "events": [
+    {
+      "id": "3ro0njk7ple5bj1rq69ldk1rpn@google.com",
+      "title": "Advanced Tai Chi",
+      "start": "2026-09-01T16:30:00.000Z",
+      "end": "2026-09-01T18:00:00.000Z",
+      "allDay": false,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "75he7rfr8qi9lqflgtl0jh2sv7@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-02T21:00:00.000Z",
+      "end": "2026-09-02T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "4mqmudfhj34u77cpg78kk1894o@google.com",
+      "title": "Qigong Weekly meeting",
+      "start": "2026-09-04T17:00:00.000Z",
+      "end": "2026-09-04T17:45:00.000Z",
+      "allDay": false,
+      "calendar": "Qigong",
+      "color": "#8064A2",
+      "location": "Green Valley Recreation Las Campanas Center, 565 W Belltower Dr, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "20260907_3iv7l7ja8ses3smgpgh5fqearo@google.com",
+      "title": "Labor Day",
+      "start": "2026-09-07T07:00:00.000Z",
+      "end": "2026-09-08T07:00:00.000Z",
+      "allDay": true,
+      "calendar": "Holidays in United States",
+      "color": "#C9A227",
+      "location": ""
+    },
+    {
+      "id": "6blbptdubcmnah9g4m668eesmm@google.com",
+      "title": "and test me again",
+      "start": "2026-09-07T07:00:00.000Z",
+      "end": "2026-09-08T07:00:00.000Z",
+      "allDay": true,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": ""
+    },
+    {
+      "id": "4k7fd4pfp2r685rdr24fqv7275@google.com",
+      "title": "test me again",
+      "start": "2026-09-07T07:00:00.000Z",
+      "end": "2026-09-08T07:00:00.000Z",
+      "allDay": true,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": ""
+    },
+    {
+      "id": "4qlcagmiu9oqh6t5as1jff7gbu@google.com",
+      "title": "test me now",
+      "start": "2026-09-07T07:00:00.000Z",
+      "end": "2026-09-08T07:00:00.000Z",
+      "allDay": true,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": ""
+    },
+    {
+      "id": "6ol684uvq9vp8p54er7spjj3pc@google.com",
+      "title": "Beginner Tai Chi",
+      "start": "2026-09-07T20:00:00.000Z",
+      "end": "2026-09-07T21:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "27f1hqtjdouao223ja0vibtous@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-07T21:00:00.000Z",
+      "end": "2026-09-07T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "3ro0njk7ple5bj1rq69ldk1rpn@google.com",
+      "title": "Advanced Tai Chi",
+      "start": "2026-09-08T16:30:00.000Z",
+      "end": "2026-09-08T18:00:00.000Z",
+      "allDay": false,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "33qq3iuu5pf5n6ms84ujiq7rjd@google.com",
+      "title": "test me",
+      "start": "2026-09-08T17:00:00.000Z",
+      "end": "2026-09-08T17:30:00.000Z",
+      "allDay": false,
+      "calendar": "Qigong",
+      "color": "#8064A2",
+      "location": ""
+    },
+    {
+      "id": "5kic4368lvogr2vtrmuh187gv4@google.com",
+      "title": "test me 2",
+      "start": "2026-09-08T17:00:00.000Z",
+      "end": "2026-09-08T19:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": ""
+    },
+    {
+      "id": "04djifcpvibnb0rsuniun6s490@google.com",
+      "title": "test me 3",
+      "start": "2026-09-08T17:30:00.000Z",
+      "end": "2026-09-08T18:30:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": ""
+    },
+    {
+      "id": "4h8e4dgi2pe8gip126n1a83kqe@google.com",
+      "title": "test me 4",
+      "start": "2026-09-08T18:00:00.000Z",
+      "end": "2026-09-08T19:30:00.000Z",
+      "allDay": false,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": ""
+    },
+    {
+      "id": "75he7rfr8qi9lqflgtl0jh2sv7@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-09T21:00:00.000Z",
+      "end": "2026-09-09T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "4mqmudfhj34u77cpg78kk1894o@google.com",
+      "title": "Qigong Weekly meeting",
+      "start": "2026-09-11T17:00:00.000Z",
+      "end": "2026-09-11T17:45:00.000Z",
+      "allDay": false,
+      "calendar": "Qigong",
+      "color": "#8064A2",
+      "location": "Green Valley Recreation Las Campanas Center, 565 W Belltower Dr, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "6ol684uvq9vp8p54er7spjj3pc@google.com",
+      "title": "Beginner Tai Chi",
+      "start": "2026-09-14T20:00:00.000Z",
+      "end": "2026-09-14T21:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "27f1hqtjdouao223ja0vibtous@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-14T21:00:00.000Z",
+      "end": "2026-09-14T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "3ro0njk7ple5bj1rq69ldk1rpn@google.com",
+      "title": "Advanced Tai Chi",
+      "start": "2026-09-15T16:30:00.000Z",
+      "end": "2026-09-15T18:00:00.000Z",
+      "allDay": false,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "75he7rfr8qi9lqflgtl0jh2sv7@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-16T21:00:00.000Z",
+      "end": "2026-09-16T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "7jgtdbnqdnlagcou8v083duvcv@google.com",
+      "title": "Beginner Tai Chi",
+      "start": "2026-09-16T22:00:00.000Z",
+      "end": "2026-09-16T23:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": "Santa Rita Springs Recreation Center, 921 W Via Rio Fuerte, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "4k5vapvdql8kbvkn4ib28moo93@google.com",
+      "title": "Yang 10 Form",
+      "start": "2026-09-17T17:00:00.000Z",
+      "end": "2026-09-17T18:00:00.000Z",
+      "allDay": false,
+      "calendar": "Yang 10 Form",
+      "color": "#2A9D8F",
+      "location": ""
+    },
+    {
+      "id": "4mqmudfhj34u77cpg78kk1894o@google.com",
+      "title": "Qigong Weekly meeting",
+      "start": "2026-09-18T17:00:00.000Z",
+      "end": "2026-09-18T17:45:00.000Z",
+      "allDay": false,
+      "calendar": "Qigong",
+      "color": "#8064A2",
+      "location": "Green Valley Recreation Las Campanas Center, 565 W Belltower Dr, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "6ol684uvq9vp8p54er7spjj3pc@google.com",
+      "title": "Beginner Tai Chi",
+      "start": "2026-09-21T20:00:00.000Z",
+      "end": "2026-09-21T21:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "27f1hqtjdouao223ja0vibtous@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-21T21:00:00.000Z",
+      "end": "2026-09-21T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "3ro0njk7ple5bj1rq69ldk1rpn@google.com",
+      "title": "Advanced Tai Chi",
+      "start": "2026-09-22T16:30:00.000Z",
+      "end": "2026-09-22T18:00:00.000Z",
+      "allDay": false,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "75he7rfr8qi9lqflgtl0jh2sv7@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-23T21:00:00.000Z",
+      "end": "2026-09-23T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "7jgtdbnqdnlagcou8v083duvcv@google.com",
+      "title": "Beginner Tai Chi",
+      "start": "2026-09-23T22:00:00.000Z",
+      "end": "2026-09-23T23:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": "Santa Rita Springs Recreation Center, 921 W Via Rio Fuerte, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "4k5vapvdql8kbvkn4ib28moo93@google.com",
+      "title": "Yang 10 Form",
+      "start": "2026-09-24T17:00:00.000Z",
+      "end": "2026-09-24T18:00:00.000Z",
+      "allDay": false,
+      "calendar": "Yang 10 Form",
+      "color": "#2A9D8F",
+      "location": ""
+    },
+    {
+      "id": "4mqmudfhj34u77cpg78kk1894o@google.com",
+      "title": "Qigong Weekly meeting",
+      "start": "2026-09-25T17:00:00.000Z",
+      "end": "2026-09-25T17:45:00.000Z",
+      "allDay": false,
+      "calendar": "Qigong",
+      "color": "#8064A2",
+      "location": "Green Valley Recreation Las Campanas Center, 565 W Belltower Dr, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "6ol684uvq9vp8p54er7spjj3pc@google.com",
+      "title": "Beginner Tai Chi",
+      "start": "2026-09-28T20:00:00.000Z",
+      "end": "2026-09-28T21:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "27f1hqtjdouao223ja0vibtous@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-28T21:00:00.000Z",
+      "end": "2026-09-28T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Green Valley Recreation Desert Hills Center, 2980 S Camino Del Sol #107 - D, Green Valley, AZ 85622, USA"
+    },
+    {
+      "id": "3ro0njk7ple5bj1rq69ldk1rpn@google.com",
+      "title": "Advanced Tai Chi",
+      "start": "2026-09-29T16:30:00.000Z",
+      "end": "2026-09-29T18:00:00.000Z",
+      "allDay": false,
+      "calendar": "Advanced Tai Chi",
+      "color": "#4F81BD",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "4v1icavf8nvm09kgunkm1jcdj8@google.com",
+      "title": "test",
+      "start": "2026-09-30T01:30:00.000Z",
+      "end": "2026-09-30T02:30:00.000Z",
+      "allDay": false,
+      "calendar": "Social",
+      "color": "#C65D57",
+      "location": ""
+    },
+    {
+      "id": "75he7rfr8qi9lqflgtl0jh2sv7@google.com",
+      "title": "Intermediate Tai Chi",
+      "start": "2026-09-30T21:00:00.000Z",
+      "end": "2026-09-30T22:00:00.000Z",
+      "allDay": false,
+      "calendar": "Intermediate Tai Chi",
+      "color": "#D98C3F",
+      "location": "Anza Room Santa Rita Springs, Green Valley, AZ 85614, USA"
+    },
+    {
+      "id": "7jgtdbnqdnlagcou8v083duvcv@google.com",
+      "title": "Beginner Tai Chi",
+      "start": "2026-09-30T22:00:00.000Z",
+      "end": "2026-09-30T23:00:00.000Z",
+      "allDay": false,
+      "calendar": "Beginner Tai Chi",
+      "color": "#5B9B6D",
+      "location": "Santa Rita Springs Recreation Center, 921 W Via Rio Fuerte, Green Valley, AZ 85614, USA"
+    },
     {
       "id": "4k5vapvdql8kbvkn4ib28moo93@google.com",
       "title": "Yang 10 Form",
