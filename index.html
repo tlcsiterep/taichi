@@ -1123,9 +1123,50 @@ function loadCalendarConfig(preservedSelections) {
       });
 
       /*
-       * Build the existing browser month cache from
-       * the single downloaded JSON file.
+       * Build the browser month cache from the
+       * single downloaded JSON file.
+       *
+       * IMPORTANT:
+       * Create an entry for EVERY month covered by
+       * calendar.json, even when that month has zero
+       * events. The week view can cross a month boundary
+       * (for example Sep 27 - Oct 3), and an empty
+       * September cache must still count as available.
        */
+      if (data.start && data.end) {
+
+        const dataStart =
+          new Date(data.start);
+
+        const dataEnd =
+          new Date(data.end);
+
+        let cacheMonth =
+          new Date(
+            dataStart.getFullYear(),
+            dataStart.getMonth(),
+            1
+          );
+
+        while (cacheMonth < dataEnd) {
+
+          const cacheKey =
+            cacheMonth.getFullYear() +
+            "_" +
+            (cacheMonth.getMonth() + 1);
+
+          if (!browserCalendarCache[cacheKey]) {
+            browserCalendarCache[cacheKey] = [];
+          }
+
+          cacheMonth.setMonth(
+            cacheMonth.getMonth() + 1
+          );
+
+        }
+
+      }
+
       data.events.forEach(function(event) {
 
         const eventStart =
