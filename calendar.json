@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-02T20:09:35.825Z",
+  "updated": "2026-10-02T20:24:27.359Z",
   "start": "2026-09-01T07:00:00.000Z",
   "end": "2027-10-01T07:00:00.000Z",
   "calendars": [
@@ -20,16 +20,16 @@
       "color": "#5B9B6D"
     },
     {
-      "name": "Advanced Tai Chi",
-      "color": "#4F81BD"
-    },
-    {
       "name": "Yang 10 Form",
       "color": "#2A9D8F"
     },
     {
       "name": "Social",
       "color": "#C65D57"
+    },
+    {
+      "name": "Advanced Tai Chi",
+      "color": "#4F81BD"
     }
   ],
   "events": [
